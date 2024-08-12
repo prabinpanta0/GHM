@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Filler</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input, button {
+            margin: 10px 0;
+            padding: 5px;
+        }
+        #status {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Form Filler</h1>
+    <form id="form-filler-form">
+        <label for="url">Form URL:</label><br>
+        <input type="url" id="url" name="url" required><br>
+        <label for="iterations">Number of Iterations:</label><br>
+        <input type="number" id="iterations" name="iterations" required><br>
+        <button type="submit" id="start-button">Start</button>
+    </form>
+    <button id="stop-button" disabled>Stop</button>
+    <div id="status"></div>
+    <script src="/static/script.js"></script>
+</body>
+</html>
