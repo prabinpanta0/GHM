@@ -64,7 +64,7 @@ class FormFiller:
                             random.choice(options).click()
 
                     # Submit the form
-                    submit = driver.find_element(By.CSS_SELECTOR, 'div[role="button"][aria-label="Submit"]')
+                    submit = driver.find_element(By.CSS_SELECTOR, 'div[role="button"]')
                     submit.click()
 
                     logging.info(f"Form submitted successfully by Environment {environment_id}")
