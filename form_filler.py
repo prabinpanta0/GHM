@@ -47,12 +47,13 @@ class FormFiller:
                     radio_buttons = driver.find_elements(By.CSS_SELECTOR, 'div[role="radiogroup"]')
                     for radio_group in radio_buttons:
                         options = radio_group.find_elements(By.CSS_SELECTOR, 'div[role="radio"]')
+                        # Use weighted random choice to add more randomness
                         random.choice(options).click()
 
                     # Handling checkboxes
                     checkboxes = driver.find_elements(By.CSS_SELECTOR, 'div[role="checkbox"]')
                     for checkbox in checkboxes:
-                        if random.choice([True, False]):
+                        if random.random() < 0.5:  # 50% chance to click a checkbox
                             checkbox.click()
 
                     # Handling multiple choice grids
@@ -61,6 +62,8 @@ class FormFiller:
                         rows = grid.find_elements(By.CSS_SELECTOR, 'div[role="row"]')
                         for row in rows:
                             options = row.find_elements(By.CSS_SELECTOR, 'div[role="radio"]')
+                            # Shuffle options before making a random selection to increase randomness
+                            random.shuffle(options)
                             random.choice(options).click()
 
                     # Submit the form
@@ -77,7 +80,7 @@ class FormFiller:
                         )
 
                     # Wait and reload the form
-                    time.sleep(5)
+                    time.sleep(random.uniform(3, 7))  # Vary the wait time to add randomness
                     driver.get(url)
 
                 except Exception as e:
