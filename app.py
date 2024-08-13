@@ -35,13 +35,25 @@ def stop_form_filling():
 
 @app.route('/status', methods=['GET'])
 def get_status():
-    return jsonify({
-        "total_iterations": form_filler.total_iterations,
-        "responses_sent": form_filler.responses_sent,
-        "errors": form_filler.errors,
-        "iterations_left": form_filler.iterations_left,
-        "environment_status": form_filler.environment_status
-    })
+    with form_filler.lock:
+        if form_filler.responses_sent == 0 and form_filler.errors == 0 and form_filler.iterations_left == form_filler.total_iterations:
+            # This condition checks if everything is still initializing
+            return jsonify({
+                "total_iterations": form_filler.total_iterations,
+                "responses_sent": None,  # Return None instead of 0 to indicate uninitialized
+                "errors": None,
+                "iterations_left": form_filler.iterations_left,
+                "environment_status": None
+            })
+        else:
+            return jsonify({
+                "total_iterations": form_filler.total_iterations,
+                "responses_sent": form_filler.responses_sent,
+                "errors": form_filler.errors,
+                "iterations_left": form_filler.iterations_left,
+                "environment_status": list(form_filler.environment_status)
+            })
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

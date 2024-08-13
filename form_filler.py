@@ -47,13 +47,15 @@ class FormFiller:
                     radio_buttons = driver.find_elements(By.CSS_SELECTOR, 'div[role="radiogroup"]')
                     for radio_group in radio_buttons:
                         options = radio_group.find_elements(By.CSS_SELECTOR, 'div[role="radio"]')
-                        # Use weighted random choice to add more randomness
-                        random.choice(options).click()
+                        # Use weighted random choice with varying weights
+                        weights = [random.random() for _ in options]
+                        chosen_option = random.choices(options, weights=weights, k=1)[0]
+                        chosen_option.click()
 
                     # Handling checkboxes
                     checkboxes = driver.find_elements(By.CSS_SELECTOR, 'div[role="checkbox"]')
                     for checkbox in checkboxes:
-                        if random.random() < 0.5:  # 50% chance to click a checkbox
+                        if random.random() < random.uniform(0.3, 0.7):  # Vary checkbox selection probability
                             checkbox.click()
 
                     # Handling multiple choice grids
@@ -62,12 +64,13 @@ class FormFiller:
                         rows = grid.find_elements(By.CSS_SELECTOR, 'div[role="row"]')
                         for row in rows:
                             options = row.find_elements(By.CSS_SELECTOR, 'div[role="radio"]')
-                            # Shuffle options before making a random selection to increase randomness
-                            random.shuffle(options)
-                            random.choice(options).click()
+                            # Use weighted random choice for each row
+                            weights = [random.random() for _ in options]
+                            chosen_option = random.choices(options, weights=weights, k=1)[0]
+                            chosen_option.click()
 
                     # Submit the form
-                    submit = driver.find_element(By.CSS_SELECTOR, 'div[role="button"]')
+                    submit = driver.find_element(By.CSS_SELECTOR, 'div[role="button"][aria-label="Submit"]')
                     submit.click()
 
                     logging.info(f"Form submitted successfully by Environment {environment_id}")
@@ -80,7 +83,7 @@ class FormFiller:
                         )
 
                     # Wait and reload the form
-                    time.sleep(random.uniform(3, 7))  # Vary the wait time to add randomness
+                    time.sleep(random.uniform(2, 8))  # Increase variation in wait time
                     driver.get(url)
 
                 except Exception as e:
