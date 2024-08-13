@@ -21,8 +21,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the application code
 COPY . /app/
 
-# Expose port 5000 for Flask
-EXPOSE 5000
+# Expose port 7860 for the app (standard port for Hugging Face Spaces)
+EXPOSE 7860
 
-# Command to run the application
-CMD ["python", "app.py"]
+# Command to run the application with Gunicorn
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:7860", "app:app"]
