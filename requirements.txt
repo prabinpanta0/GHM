@@ -2,3 +2,4 @@ Flask
 selenium
 flask
 xvfbwrapper
+gunicorn
