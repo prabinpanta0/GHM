@@ -3,7 +3,7 @@ title: AJA
 emoji: 🏆
 colorFrom: purple
 colorTo: pink
-sdk: gradio
+sdk: static
 sdk_version: 4.41.0
 app_file: app.py
 pinned: false
