@@ -1,6 +1,10 @@
 from flask import Flask, render_template, request, jsonify
 from form_filler import FormFiller
 import threading
+import os
+
+# Specify the cache directory as an environment variable
+os.environ['CACHE_FOLDER'] = os.path.join(os.getcwd(), '.cache')
 
 app = Flask(__name__)
 form_filler = FormFiller()
