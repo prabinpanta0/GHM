@@ -29,12 +29,22 @@ class FormFiller:
             display = Xvfb(width=1280, height=720)
             display.start()
 
+            # Modify the chrome options to specify the cache directory
             chrome_options = Options()
             chrome_options.add_argument("--headless")
             chrome_options.add_argument("--no-sandbox")
             chrome_options.add_argument("--disable-dev-shm-usage")
             chrome_options.add_argument("--disable-gpu")
-
+            
+            # Create a cache directory if it doesn't exist
+            cache_dir = os.path.join(os.getcwd(), '.cache')
+            if not os.path.exists(cache_dir):
+                os.makedirs(cache_dir)
+            
+            # Specify the cache directory
+            chrome_options.add_argument(f"--disk-cache-dir={cache_dir}")
+            chrome_options.add_argument(f"--cache-dir={cache_dir}")
+            
             driver = webdriver.Chrome(options=chrome_options)
             driver.get(url)
 
