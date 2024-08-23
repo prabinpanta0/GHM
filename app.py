@@ -2,13 +2,26 @@ from flask import Flask, render_template, request, jsonify
 from form_filler import FormFiller
 import threading
 import os
+import logging
+import random
+from concurrent.futures import ThreadPoolExecutor
+import time
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from xvfbwrapper import Xvfb
+from threading import Lock, Event
 
-# Specify the cache directory as an environment variable
-os.environ['CACHE_FOLDER'] = os.path.join(os.getcwd(), '.cache')
+# Create a logger
+logger = logging.getLogger(__name__)
 
+# Set up the Flask application
 app = Flask(__name__)
+
+# Create a FormFiller instance
 form_filler = FormFiller()
 
+# Define the routes for the Flask application
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -19,7 +32,10 @@ def start_form_filling():
     iterations = int(request.json['iterations'])
     
     def run_form_filler():
-        form_filler.fill_form_in_parallel(url, iterations)
+        try:
+            form_filler.fill_form_in_parallel(url, iterations)
+        except Exception as e:
+            logger.error(f"Error occurred: {e}")
     
     form_filler.total_iterations = iterations
     form_filler.iterations_left = iterations
@@ -57,7 +73,6 @@ def get_status():
                 "iterations_left": form_filler.iterations_left,
                 "environment_status": list(form_filler.environment_status)
             })
-
 
 if __name__ == '__main__':
     app.run()
